@@ -150,3 +150,67 @@ return a representation of the resource that has just been created or updated.
 
 This avoids the consumer from having to hit the service again to get the latest
 representation of the resource.
+
+## Status Codes
+
+Using HTTP status codes correctly and intuitively will allow the consumer to better handle
+different types of responses from the service and return meaningful information.
+
+### `200 OK`
+
+`200` responses should be issued when a request was successful and has been completed, for
+example a `GET`, `PUT` or `PATCH`. `200` can also be used as valid `POST` response **IF**
+the request has not resulted in a new resource being created.
+
+### `201 Created`
+
+Only used for `POST` request responses that have resulted in the creation of a new
+resource. This should also be used in combination with the `Location` header which would
+contain a URI to the newly created resource.
+
+### `202 Accepted`
+
+This status could should be returned if the request has not been acted upon, for example
+it maybe in an asynchronous queue and will be acted upon later. The `Location` header
+could also be used with this status code to give the URI to eventual location of
+the result of this action. This could for a `POST` request to an email service for example.
+
+### `204 No Content`
+
+Only used for `DELETE` request responses when a resource has been successfully deleted.
+
+### `400 Bad Request`
+
+Used when a request is malformed, for example the request body cannot be unmarshaled
+by the service.
+
+### `401 Unauthorized`
+
+When a request does not provide valid credentials for a protected resource that requires
+authentication.
+
+### `403 Forbidden`
+
+Used when a request us authorized but does not have sufficient access rights to perform
+the action.
+
+### `404 Not Found`
+
+When a resource does not exist.
+
+### `405 Method Not Allowed`
+
+Returned when a request is made to a service resource with a HTTP method that is not
+supported by the resource.
+
+### `415 Unsupported Media Type`
+
+If a request to the service with an incorrect content type.
+
+### `422 Unprocessable Entity`
+
+Used for validation errors with the request body.
+
+### `429 Too Many Requests`
+
+If the consumer has been rate limited and has made too many requests.
