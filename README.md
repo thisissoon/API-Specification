@@ -268,3 +268,51 @@ Just return the data :wink:
     "foo": "bar"
 }
 ```
+
+### Response Body Format
+
+All response bodies should follow the [`HAL`](http://stateless.co/hal_specification.html) specification which
+follows the [`HATEOAS`](https://en.wikipedia.org/wiki/HATEOAS) principle.
+
+This ensures that links to external / embedded / related resources and actions are contained in
+the `JSON` response body to make it easy for the consumer to perform other related actions, or
+retrieve related data.
+
+A generic `HAL` response would look something like this:
+
+``` json
+{
+    "_links": {
+        "self": {
+            "href": "/products/523"
+        },
+        "warehouse": {
+            "href": "/warehouse/56"
+        },
+        "company": {
+            "href": "/company/873"
+        }
+    },
+    "name": "Foo",
+    "currency": "£",
+    "price": 10.20
+}
+```
+
+The above representation is for the `/products/523`. The document contains data about the state of resource
+the resource (`name`, `currency`, and `price`). The is also a `_links` property which is an object
+containing links off to other related resources as well as a link to itself. If this were to be
+represent as `XML` it would look like this:
+
+``` xml
+<product>
+    <link rel="self" href="/products/523" />
+    <link rel="warehouse" href="/warehouse/56" />
+    <link rel="company" href="/company/873" />
+    <name>Foo</name>
+    <currency>£</currency>
+    <price>10.20</price>
+</product>
+```
+
+In the above examples both the `JSON` and `XML` formats come out a 162 and 161 bytes respectively gzipped.
