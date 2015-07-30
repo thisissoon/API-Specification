@@ -388,7 +388,6 @@ be an embedded object since we are including the name and price of the product:
     "status": "processing",
     "placed": "2015-07-29T14:59:08+00:00"
 }
-
 ```
 
 If we didn't want to embed it then we could just put it in the `_links` attribute instead:
@@ -412,3 +411,58 @@ If we didn't want to embed it then we could just put it in the `_links` attribut
 ```
 
 This would force the consumer to make another API call if it wanted basic product data.
+
+### Pagination
+
+Resource which support multiple pages of data should use the `HAL` specification to
+provide links to other pages within the resource using the `_links` attribute.
+The resource itself should return data about the state the resource.
+
+An example would be an orders resource (`/orders`):
+
+``` json
+{
+    "_links": {
+        "self": {
+            "href": "/orders",
+            "title": "Orders"
+        },
+        "next": {
+            "href": "/orders?page=2",
+            "title": "Orders Page 2"
+        }
+    },
+    "_embedded": {
+        "orders": [
+            {
+                "_links": {
+                    "self": {
+                        "href": "/orders/123",
+                        "title": "Order 123"
+                    }
+                },
+                "number": "123",
+                "status": "processing"
+            }, {
+                "_links": {
+                    "self": {
+                        "href": "/orders/456",
+                        "title": "Order 456"
+                    }
+                },
+                "number": "456",
+                "status": "shipped"
+            }
+        ],
+    },
+    "shipped": 12,
+    "processing": 20,
+    "total": 32,
+    "limit": 2
+}
+```
+
+Here we can see the `_links` property contains our `next` link data. The `_emebdded` property
+contains an `orders` property which has our list of embedded objects. The other properties
+returned by the resource contain data about the state of the resource we have accessed, so total
+items, the current limit, how many orders we have shipped and are still processing.
