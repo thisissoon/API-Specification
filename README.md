@@ -15,6 +15,15 @@ goals of our API's.
 * It should be intuitive to navigate
 * It should be **simple**
 
+## Versioning
+
+Each service should support the ability to run different versions if required. For example:
+
+* `/v1` Would route to all the first version endpoints
+* `/v2` Would route to the new version endpoints
+
+`/v1` and `/v2` would usually not be forwards or backwards compatible.
+
 ## RESTful Resources / URL Structure
 
 In general each service should expose resources on which actions can be taken. Not everything
