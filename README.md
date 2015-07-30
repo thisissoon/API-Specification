@@ -142,3 +142,11 @@ The above might be equivalent too:
 `GET /products?sort=-created&limit=4`
 
 Which would return only the latest 4 new products.
+
+### Returning Resource Representations
+
+When issuing `POST`, `PUT` or `PATCH` requests to create or update objects should always
+return a representation of the resource that has just been created or updated.
+
+This avoids the consumer from having to hit the service again to get the latest
+representation of the resource.
