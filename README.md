@@ -151,6 +151,13 @@ return a representation of the resource that has just been created or updated.
 This avoids the consumer from having to hit the service again to get the latest
 representation of the resource.
 
+## Request Bodies
+
+Request bodies should always be `JSON` encoded, services should return a `400` if request
+bodies cannot be unmarshaled from `JSON` into valid data structures.
+
+A `415` can also be returned if the content type is also not `application/json`.
+
 ## Status Codes
 
 Using HTTP status codes correctly and intuitively will allow the consumer to better handle
@@ -219,7 +226,7 @@ If the consumer has been rate limited and has made too many requests.
 
 It is very important that all our API's stick to a standard response format. General principles are:
 
-* `JSON` All the way, it's easier to work with than XML in general
+* `JSON` All the way
 * They stick to `HATEOAS` principles - which can be provided by the `HAL` specification
 
 ### :snake: or :camel: case?
