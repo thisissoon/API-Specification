@@ -231,3 +231,33 @@ That said Snake case is easier to **20%** easier read than camel case and thus s
 API easier for humans to read since machines couldn't care less.
 
 **we should decide this together on monday**
+
+### Pretty Print by Default
+
+API Responses should be easily readable by a Human so that means they should include white space.
+The bytes used for this minimal provided gzip is on (2% vs 8% when gzip is off).
+
+However each service should provide a `pretty` query parameter that accepts a boolean value to
+override so responses can trim the white space.
+
+`GET /products?pretty=false`
+
+### Do not use an envelope
+
+Response should not be wrapped in an enveloper, for example:
+
+``` json
+{
+    "data": {
+        "foo": "bar"
+    }
+}
+```
+
+Just return the data :wink:
+
+``` json
+{
+    "foo": "bar"
+}
+```
