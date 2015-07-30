@@ -4,6 +4,8 @@ We write a lot of services that communicate with one another, it's important tha
 have a standard source of truth for how we should write and consume our services via API's.
 This document aims to provide that one source of truth.
 
+## This is only a first draft and should not yet considered truth##
+
 ## Credits
 
 This document is inspired by: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
