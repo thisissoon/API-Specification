@@ -271,8 +271,8 @@ Just return the data :wink:
 
 ### Response Body Format
 
-All response bodies should follow the [`HAL`](http://stateless.co/hal_specification.html) specification which
-follows the [`HATEOAS`](https://en.wikipedia.org/wiki/HATEOAS) principle.
+All response bodies should follow the [`HAL`](https://tools.ietf.org/html/draft-kelly-json-hal-07)
+specification which follows the [`HATEOAS`](https://en.wikipedia.org/wiki/HATEOAS) principle.
 
 This ensures that links to external / embedded / related resources and actions are contained in
 the `JSON` response body to make it easy for the consumer to perform other related actions, or
@@ -316,3 +316,99 @@ represent as `XML` it would look like this:
 ```
 
 In the above examples both the `JSON` and `XML` formats come out a 162 and 161 bytes respectively gzipped.
+
+### Links
+
+The reserved `_links` property is **NOT** optional and should always contain a link to itself
+if no other links are required:
+
+``` json
+{
+    "_links": {
+        "self": {
+            "href": "/you/are/here"
+        }
+    }
+}
+```
+
+Links can also contain other properties other than `href`, see the
+[Official Specification](https://tools.ietf.org/html/draft-kelly-json-hal-07#section-5.1) for
+a full list of properties.
+
+A more complete example would be:
+
+``` json
+{
+    "_links": {
+        "self": {
+            "href": "/products",
+            "title": "Products"
+        },
+        "next": {
+            "href": "/products?page=2",
+            "title": "Page 2 of Products"
+        }
+    },
+    "foo": "bar"
+}
+```
+
+This example also touches on pagination which we will get to later.
+
+### Embedded Links
+
+The reserved `_embedded` property is **OPTIONAL** and would contain one or more objects specifically
+related to the resource object that you are embedding into the response.
+
+So for example an order object would be related to a product for which the order is for, this would
+be an embedded object since we are including the name and price of the product:
+
+``` json
+{
+    "_links": {
+        "self": {
+            "href": "/order/12345",
+            "title": "Order 12345"
+        },
+    },
+    "_embedded": {
+        "product": {
+            "_links": {
+                "self": {
+                    "href": "/products/123",
+                    "title": "Foo"
+                }
+            },
+            "name": "Foo",
+            "price": 11.20
+        },
+    },
+    "number": "12345",
+    "status": "processing",
+    "placed": "2015-07-29T14:59:08+00:00"
+}
+
+```
+
+If we didn't want to embed it then we could just put it in the `_links` attribute instead:
+
+``` json
+{
+    "_links": {
+        "self": {
+            "href": "/order/12345",
+            "title": "Order 12345"
+        },
+        "product": {
+            "href": "/products/123",
+            "title": "Foo"
+        }
+    },
+    "number": "12345",
+    "status": "processing",
+    "placed": "2015-07-29T14:59:08+00:00"
+}
+```
+
+This would force the consumer to make another API call if it wanted basic product data.
