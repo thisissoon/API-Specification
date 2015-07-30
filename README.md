@@ -214,3 +214,20 @@ Used for validation errors with the request body.
 ### `429 Too Many Requests`
 
 If the consumer has been rate limited and has made too many requests.
+
+## Responses
+
+It is very important that all our API's stick to a standard response format. General principles are:
+
+* `JSON` All the way, it's easier to work with than XML in general
+* They stick to `HATEOAS` principles - which can be provided by the `HAL` specification
+
+### :snake: or :camel: case?
+
+Since `JSON` is part of the Javascript family we should use Javascript naming conventions for `JSON`.
+This does mean using camel case for field names.
+
+That said Snake case is easier to **20%** easier read than camel case and thus should make the
+API easier for humans to read since machines couldn't care less.
+
+**we should decide this together on monday**
