@@ -234,8 +234,9 @@ It is very important that all our API's stick to a standard response format. Gen
 Since `JSON` is part of the Javascript family we should use Javascript naming conventions for `JSON`.
 This does mean using camel case for field names.
 
-That said Snake case is easier to **20%** easier read than camel case and thus should make the
-API easier for humans to read since machines couldn't care less.
+That said Snake case is easier read than camel case (by 20% according to
+this [Study](http://www.cs.kent.edu/~jmaletic/papers/ICPC2010-CamelCaseUnderScoreClouds.pdf)) and thus
+should make the API easier for humans to read since machines couldn't care less.
 
 **we should decide this together on monday**
 
@@ -482,7 +483,7 @@ This will tell us which service initially generated the ID.
 
 So an example maybe:
 
-`authentication:5f1457e5-bdbe-4f18-b358-fb5351b10f7c`
+`products:5f1457e5-bdbe-4f18-b358-fb5351b10f7c`
 
 If the caller of the service has not provided a Correlation ID it is the responsibility of the
 service to generate one.
