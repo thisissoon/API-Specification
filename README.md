@@ -466,3 +466,23 @@ Here we can see the `_links` property contains our `next` link data. The `_emebd
 contains an `orders` property which has our list of embedded objects. The other properties
 returned by the resource contain data about the state of the resource we have accessed, so total
 items, the current limit, how many orders we have shipped and are still processing.
+
+## Correlation ID's
+
+Correlation ID's allow us to track requests through various services allowing us to diagnose
+errors up the request stack, like a stack trace in code.
+
+Each service is responsible for passing the Correlation ID onto each subsequent request it
+makes to other services. This should be done via HTTP Header `Correlation-ID` and should be
+a UUID matching the following pattern:
+
+`{:service_name}:{:uuid4}`
+
+This will tell us which service initially generated the ID.
+
+So an example maybe:
+
+`authentication:5f1457e5-bdbe-4f18-b358-fb5351b10f7c`
+
+If the caller of the service has not provided a Correlation ID it is the responsibility of the
+service to generate one.
