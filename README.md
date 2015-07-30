@@ -32,7 +32,8 @@ in general (Customer, Session, Product, Search etc)
 
 ### HTTP Verbs
 
-HTTP Verbs mean something in context of the intended action against a resource.
+Services should user standard HTTP verbs together with resources which provide the intended
+action against a resource, for example:
 
 * `GET /products` - Get a list of products
 * `GET /products/123` - Get a specific product
@@ -57,7 +58,7 @@ our `products` may have a set of customer generated reviews against them:
 
 It sometimes will not make sense to include all of a resources relations, you can provide a link
 off to these other relations using the `HATEOAS` standard which we will come too later when
-we define our JSON structure.
+we define our data structure.
 
 ### Actions that don't fit the mould
 
@@ -68,3 +69,72 @@ resource and updating an `activated` flag from `0` to `1`.
 Try and map to stubs to RESTful principles, for example, the SOON\_ FM API allows you to
 pause the player by sending `POST` request to `/player/pause` and to resume the player
 a `DELETE` request to `/player/pause`.
+
+### Limiting Fields
+
+A consumer may not want all the data which the resource returns, a consumer should be able
+to specify the fields it wants by using a `fields` query parameter in the URL. This would
+contain a comma separated list of fields to ask for.
+
+`GET /products?fields=id,name,price`
+
+Would only return the `id`, `name`, and `price` fields.
+
+**Note:** Services should be flexible and not break if a consumer asks for a field that is
+not supported to avoid the consumer breaking. Likewise consumers should also be flexible
+when dealing with fields that do not exist to avoid consumers breaking.
+
+### Sorting
+
+Some service resources will need provide sorting options, for example sorting a list of
+products by price. This should be achieved via a `sort` query parameter followed by a
+comma list of fields to sort on, each prefixed with a `+` or `-` to indicate ascending or
+descending ordering.
+
+`GET /products?sort=-price,+name`
+
+This would ask the products list resource to return results sorted descending by price and
+then ascending by name.
+
+**Note:** As with field limiting, services should not break if a consumer asks to sort on a
+field that is not supported.
+
+### Filtering
+
+Consumers may also need to filter results, for example only show products that are of a
+specific category. This should be done by using the field we want to switch on as the query
+parameter name and value being the value we want to filter on.
+
+`GET /products?category=1,2,6`
+
+The above example uses a `category` query parameter with the value of `1,2,6` which tells the
+service to only return products where they are in the `1`, `2` or `6` categories.
+
+**Note:** Services should not break if the consumer asks to filter on invalid query parameters
+or values.
+
+### Limiting List Results
+
+This ties slightly into pagination which will be covered in more detail later, however it is
+worth covering here that for resources which return multiple objects a consumer may
+want to only get a specific amount of objects, this should be done via the `limit` query
+parameter.
+
+`GET /products?limit=4`
+
+**Note:** A service should only every return a maximum number of records, for example `50`
+to avoid consumers potentially being able to break services by asking for too much data.
+
+### Common Queries
+
+It is likely consumers will often be performing the same common requests, it is entirely acceptable
+where it makes sense that a specific resource can be created for these common queries to
+make it easier for the consumer, for example:
+
+`GET /products/new`
+
+The above might be equivalent too:
+
+`GET /products?sort=-created&limit=4`
+
+Which would return only the latest 4 new products.
