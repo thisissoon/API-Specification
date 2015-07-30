@@ -252,7 +252,7 @@ override so responses can trim the white space.
 
 ### Do not use an envelope
 
-Response should not be wrapped in an enveloper, for example:
+Response should not be wrapped in an envelope, for example:
 
 ``` json
 {
@@ -269,6 +269,8 @@ Just return the data :wink:
     "foo": "bar"
 }
 ```
+
+We will be using the `HAL` specification as described below.
 
 ### Response Body Format
 
