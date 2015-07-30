@@ -322,7 +322,7 @@ In the above examples both the `JSON` and `XML` formats come out a 162 and 161 b
 
 ### Links
 
-The reserved `_links` property is **NOT** optional and should always contain a link to itself
+The reserved `_links` property is **REQUIRED** and should always contain a link to itself
 if no other links are required:
 
 ``` json
