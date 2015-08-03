@@ -477,6 +477,76 @@ contains an `orders` property which has our list of embedded objects. The other 
 returned by the resource contain data about the state of the resource we have accessed, so total
 items, the current limit, how many orders we have shipped and are still processing.
 
+## Errors
+
+Errors are guaranteed to occur, either in the form of validation errors or actual service errors.
+Errors should always follow a consistent format.
+
+We will use an `_errors` object to return error information allowing consumers to check for this
+objects existence when error status codes are retuned.
+
+### Service Errors (`5XX`)
+
+In the case of `5XX` errors it is unlikely we will know much about the error, it could be that
+a server is down (`502`) or something has gone wrong processing the request (`500`). These errors
+should be formatted as follows:
+
+``` json
+{
+    "_links": {
+        "self": {
+            "href": "/orders",
+            "title": "Orders"
+        },
+    },
+    "_errors": {
+        "message": "Internal Server Error"
+    }
+}
+```
+
+If we are operating in a debug QA / Development environment this could also contain a `stack` attribute:
+
+``` json
+{
+    "_links": {
+        "self": {
+            "href": "/orders",
+            "title": "Orders"
+        },
+    },
+    "_errors": {
+        "message": "Internal Server Error",
+        "stack": "...ImportError: cannot import name authenticated...",
+    }
+}
+```
+
+### Validation Errors (`422`)
+
+If the consumer has sent in-valid data the service will respond with a `422`. The `_errors` object
+will also contain those validation errors.
+
+``` json
+{
+    "_links": {
+        "self": {
+            "href": "/orders",
+            "title": "Orders"
+        },
+    },
+    "_errors": {
+        "message": "Validation Errors",
+        "errors": {
+            "field_name": "First name can only contain ASCII characters",
+            "password": "Password is requried",
+        }
+    }
+}
+```
+
+Here `_errors` now containers an `errors` object which contains field level validation errors.
+
 ## Correlation ID's
 
 Correlation ID's allow us to track requests through various services allowing us to diagnose
