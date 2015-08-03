@@ -567,3 +567,106 @@ Date: Mon, 03 Aug 2015 11:37:25 GMT
     "activated": true,
 }
 ```
+
+## HMAC Request Verification
+
+Each service should sign it's requests to other services using a `Base 64` `SHA256` `HMAC` using
+a private key. Each down stream service will then validate each request to ensure the request
+has come from a known service and has not been tampered with.
+
+Each service should send their request signature using the `Signature` HTTP Header which follows
+this format:
+
+```
+Signature: id:signature
+```
+
+If a service does not contain a `Signature` header or the signature is not valid the service
+should return a `405 Bad Request` and Flag the request as suspicious.
+
+### Example
+
+The follow example shows a Python Server and Go Client.
+
+#### Server
+
+**Note:** This is pseudo code.
+
+``` python
+import base64
+import hashlib
+import hmac
+
+from flask import Flask, request
+app = Flask(__name__)
+
+clients = {
+    'FooService': '123abc'
+}
+
+@app.route("/")
+def hello():
+    # Get the Signature, splitting at the : which gives us the client id and the request signature
+    cleint_id, client_signature = request.headers.get('Signature').split(':')
+    # Get the Private Key for the Client
+    key = clients.get(client_id)
+    # Generate the Same Base64 encoded SHA256 HMAC from the Clients Key
+    signature = base64.b64encode(
+        hmac.new(
+            key,
+            request.data,
+            hashlib.sha256).digest())
+
+    # Ensure they match, if not throw a 405
+    if client_signature != signature:
+        return 'Invalid Signature', 405
+
+    # Everything is cool...
+    return "Hello World!", 200
+
+if __name__ == "__main__":
+    app.run()
+```
+
+#### Client
+
+**Note:** This is pseudo code.
+
+``` golang
+package main
+
+import (
+	"bytes"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/base64"
+	"fmt"
+	"log"
+	"net/http"
+)
+
+var key = "123abc"
+var id = "FooService"
+
+func main() {
+	// JSON Data to send in the body
+	data := []byte(`{"foo": "bar"}`)
+
+	// Generate Signature - SHA256 HMAC from Private Key Base64 Encoded
+	mac := hmac.New(sha256.New, []byte(key))
+	mac.Write(data)
+	signature := base64.StdEncoding.EncodeToString(mac.Sum(nil))
+
+	// Make the request to the service - adding the custmom header
+	req, _ := http.NewRequest("POST", "http://hello.service", bytes.NewBuffer(data))
+	req.Header.Set("Signasture", fmt.Sprintf("%s:%s", id, signature))
+	client := &http.Client{}
+	res, err := client.Do(req)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(res)
+}
+```
