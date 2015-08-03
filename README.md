@@ -514,7 +514,7 @@ a unique Session ID used to validate the user.
   `auth.service` which would be an internal micro service handling user authentication.
 
 ``` http
-GET / HTTP/1.1
+POST / HTTP/1.1
 Accept: */*
 Accept-Encoding: gzip, deflate
 Connection: keep-alive
