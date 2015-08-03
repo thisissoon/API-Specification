@@ -160,6 +160,12 @@ bodies cannot be unmarshaled from `JSON` into valid data structures.
 
 A `415` can also be returned if the content type is also not `application/json`.
 
+### Business Requirements
+
+Clients may also require our public facing API's to use other formats, such as `XML`. In
+that situation the API gateway would need to provide some sort of content negotiation to
+communicate with other services using `JSON`.
+
 ## Status Codes
 
 Using HTTP status codes correctly and intuitively will allow the consumer to better handle
