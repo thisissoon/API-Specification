@@ -496,3 +496,8 @@ So an example maybe:
 
 If the caller of the service has not provided a Correlation ID it is the responsibility of the
 service to generate one.
+
+### CORS
+
+Try and avoid it where possible, Frontends should have Backends specifically designed for
+the FE to talk to other services avoiding `CORS` all together.
