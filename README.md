@@ -231,24 +231,23 @@ It is very important that all our API's stick to a standard response format. Gen
 * `JSON` All the way
 * They stick to `HATEOAS` principles - which can be provided by the `HAL` specification
 
-### :snake: or :camel: case?
+### Canel Cased
 
 Since `JSON` is part of the Javascript family we should use Javascript naming conventions for `JSON`.
 This does mean using camel case for field names.
 
-That said Snake case is easier read than camel case (by 20% according to
-this [Study](http://www.cs.kent.edu/~jmaletic/papers/ICPC2010-CamelCaseUnderScoreClouds.pdf)) and thus
-should make the API easier for humans to read since machines couldn't care less.
+`productOrderDate` and not `product_order_date`.
 
-**we should decide this together on monday**
+Some languages such as Python prefer snake case over camel however we could write some middleware
+which converts snake cased attributes to Camel Case for API responses to make life easy.
 
 ### Pretty Print by Default
 
 API Responses should be easily readable by a Human so that means they should include white space.
-The bytes used for this minimal provided gzip is on (2% vs 8% when gzip is off).
+The bytes used for this is minimal provided gzip is on (2% vs 8% when gzip is off).
 
 However each service should provide a `pretty` query parameter that accepts a boolean value to
-override so responses can trim the white space.
+override so responses can trim the white space if they so desire.
 
 `GET /products?pretty=false`
 
