@@ -168,8 +168,8 @@ different types of responses from the service and return meaningful information.
 ### `200 OK`
 
 `200` responses should be issued when a request was successful and has been completed, for
-example a `GET`, `PUT` or `PATCH`. `200` can also be used as valid `POST` response **IF**
-the request has not resulted in a new resource being created.
+example a `GET`, `PUT` or `PATCH`. `POST` Requests should **NOT** return a `200`. See `201`
+and `202` status codes below for valid `POST` response status codes.
 
 ### `201 Created`
 
