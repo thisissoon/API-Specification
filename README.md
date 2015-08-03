@@ -579,7 +579,73 @@ So an example maybe:
 If the caller of the service has not provided a Correlation ID it is the responsibility of the
 service to generate one.
 
-### CORS
+## CORS
 
 Try and avoid it where possible, Frontends should have Backends specifically designed for
 the FE to talk to other services avoiding `CORS` all together.
+
+## Authentication
+
+Authentication should use the `HTTP` `Authorization` header. Session tokens should be returned
+in the form of `{id}:{session_id}` where `id` is a hash of the user `id` and `session_id` is
+a unique Session ID used to validate the user.
+
+### Example Flow
+
+* First `POST` credentials to the appropriate authentication service, here we will use
+  `auth.service` which would be an internal micro service handling user authentication.
+
+``` http
+POST / HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Host: auth.service
+
+{
+    "email": "foo@bar.com",
+    "password": "1234"
+}
+```
+
+``` http
+HTTP/1.0 201 Created
+Content-Type: application/json; charset=utf-8
+Date: Mon, 03 Aug 2015 11:37:25 GMT
+
+{
+    "token": "$dsjkfhdskjfh:jhfjklsadhfkdhsafjhasdkhfjksdhfkh"
+}
+```
+
+**Note:** A `201` has been returned since a token was created.
+
+* Once the token has been generated it can then be used in the `Authorization` header for resources
+  that require authentication. This should be a `Base 64` encoded version of the token.
+
+``` http
+GET /me HTTP/1.1
+Accept: */*
+Accept-Encoding: gzip, deflate
+Authorization: Basic OmpoZmprbHNhZGhma2Roc2Fmamhhc2RraGZqa3NkaGZraA==
+Connection: keep-alive
+Host: users.service
+```
+
+``` http
+HTTP/1.0 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Mon, 03 Aug 2015 11:37:25 GMT
+
+{
+    "_links": {
+        "self": {
+            "href": "/me",
+            "title": "Me"
+        },
+    },
+    "username": "krak3n",
+    "email": "foo@bar.com",
+    "activated": true,
+}
+```
