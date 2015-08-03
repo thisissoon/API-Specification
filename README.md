@@ -584,6 +584,8 @@ Signature: id:signature
 If a service does not contain a `Signature` header or the signature is not valid the service
 should return a `405 Bad Request` and Flag the request as suspicious.
 
+Binary blob data (such as images) should be excluded from the signature and verification process.
+
 ### Example
 
 The follow example shows a Python Server and Go Client.
@@ -632,7 +634,7 @@ if __name__ == "__main__":
 
 **Note:** This is pseudo code.
 
-``` golang
+``` go
 package main
 
 import (
