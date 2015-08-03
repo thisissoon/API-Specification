@@ -460,12 +460,13 @@ An example would be an orders resource (`/orders`):
         ],
     },
     "_pagination": {
-        "total": 32,
+        "total": 16,
         "current": 1,
         "limit": 2,
     },
     "shipped": 12,
     "processing": 20,
+    "total": 32,
 }
 ```
 
@@ -480,7 +481,7 @@ containing the following:
 * `limit`: The current number of objects returned by each page
 
 The other properties returned here (`shipping`, `processing`) are specific to this resources
-current state.
+current state. Note that `total` as part of the resource state.
 
 ## Correlation ID's
 
