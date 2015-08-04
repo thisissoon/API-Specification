@@ -47,6 +47,52 @@ action against a resource, for example:
 * `PUT /products/123` - Update a product in it's entirety
 * `PATCH /products/123` - Partially updates a product
 * `DELETE /products/123` - Delete a specific product
+* `OPTIONS /products/123` - Tells what methods are supported by the resource
+
+#### `OPTIONS`
+
+All resources should support `OPTIONS` requests. Sending `OPTIONS` to the resource should
+tell us what HTTP Methods are supported by the resource.
+
+``` http
+HTTP/1.1 200 OK
+Allow: HEAD, OPTIONS, GET, POST
+Connection: keep-alive
+Content-Length: 0
+Content-Type: text/html; charset=utf-8
+Date: Tue, 04 Aug 2015 09:50:25 GMT
+Server: nginx/1.6.2
+```
+
+The above tells us the resource allows `HEAD`, `OPTIONS`, `GET`, and `POST`.  Other verbs such as
+`DELETE`, `PUT` and `PATCH` would result in a 405.
+
+##### Bonus Data
+
+Optionally to help out the consumer the `OPTIONS` request could return a data strucutre of
+exactly what is expected by a resource. This is not a hard and fast rule but it's always
+handy to have.
+
+``` json
+{
+    "GET": {
+        "description": "Returns the representation of the object."
+    },
+    "POST": {
+        "description": "This does stuff!",
+        "parameters": {
+            "title": {
+                "type": "string",
+                "description": "bla bla bla.",
+                "required": true
+            }
+        }
+    }
+}
+```
+
+Here the `POST` object describes the fields that are expected by the resoure and `GET` describes what
+a `GET` request would do.
 
 ### Related Resources
 
@@ -59,6 +105,7 @@ our `products` may have a set of customer generated reviews against them:
 * `PUT /products/123/reviews/456` - Updates the review in it's entirety
 * `PATCH /products/123/reviews/456` - Partially updates a review
 * `DELETE /products/123/reviews/456` - Deletes the review
+* `OPTIONS /products/123/reviews/456` - Tells what methods are supported by the resource
 
 ### External Relations
 
