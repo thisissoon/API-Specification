@@ -4,11 +4,46 @@ We write a lot of services that communicate with one another, it's important tha
 have a standard source of truth for how we should write and consume our services via API's.
 This document aims to provide that one source of truth.
 
-## This is only a first draft and should not yet considered truth##
+## Contents
+
+* [Credits](#credits)
+* [Requirements](#requirements)
+* [Versioning](#versioning)
+* [Restful Resources / URL Structure](#restful-resources--url-structure)
+  * [HTTP Verbs](#http-verbs)
+  * [Related Resources](#related-resources)
+  * [External Relations](#external-relations)
+  * [Limiting Fields](#limiting-fields)
+  * [Sorting](#sorting)
+  * [Filtering](#filtering)
+  * [Limiting](#limiting-list-results)
+  * [Common Queries](#common-queries)
+  * [Returning Resource Representations](##returning-resource-representations)
+* [Request Bodies](#request-bodies)
+* [Status Codes](#status-codes)
+* [Responses](#responses)
+  * [Camel Cased](#camel-cased)
+  * [Pretty Print](#pretty-print-by-default)
+  * [Do Not User an Envelope](##do-not-use-an-envelope)
+  * [Response Body Format](#response-body-format)
+  * [Links](#links)
+  * [Embedded Links](#embedded-links)
+  * [Pagination](#pagination)
+* [Errors](#errors)
+  * [Service Errors](#service-errors-5xx)
+  * [Validation Errors](#validation-errors-422)
+* [Correlation IDs](#correlation-ids)
+* [CORS](#cors)
+* [Authentication](#authentication)
+  * [Example Flow](#example-flow)
+* [HMAC](#hmac-request-verification)
+  * [Example](#example)
 
 ## Credits
 
 This document is inspired by: http://www.vinaysahni.com/best-practices-for-a-pragmatic-restful-api
+
+Everyone at [SOON\_](http://thisissoon.com)
 
 ## Requirements
 
@@ -284,7 +319,7 @@ It is very important that all our API's stick to a standard response format. Gen
 * `JSON` All the way
 * They stick to `HATEOAS` principles - which can be provided by the `HAL` specification
 
-### Canel Cased
+### Camel Cased
 
 Since `JSON` is part of the Javascript family we should use Javascript naming conventions for `JSON`.
 This does mean using camel case for field names.
