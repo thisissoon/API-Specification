@@ -746,7 +746,7 @@ Signature: id:signature
 ```
 
 If a service does not contain a `Signature` header or the signature is not valid the service
-should return a `405 Bad Request` and Flag the request as suspicious.
+should return a `400 Bad Request` and Flag the request as suspicious.
 
 Binary blob data (such as images) should be excluded from the signature and verification process.
 
@@ -783,9 +783,9 @@ def hello():
             request.data,
             hashlib.sha256).digest())
 
-    # Ensure they match, if not throw a 405
+    # Ensure they match, if not throw a 400
     if client_signature != signature:
-        return 'Invalid Signature', 405
+        return 'Invalid Signature', 400
 
     # Everything is cool...
     return "Hello World!", 200
