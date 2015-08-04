@@ -1,8 +1,20 @@
-# SOON\_ REST API Specification
+# REST API Specification
 
 We write a lot of services that communicate with one another, it's important that we
 have a standard source of truth for how we should write and consume our services via API's.
 This document aims to provide that one source of truth.
+
+## Versions
+
+Current Version: [2015.8.4](https://github.com/thisissoon/API-Specification/tree/2015.8.4)
+
+### Past Versions
+
+* [2015.8.4](https://github.com/thisissoon/API-Specification/tree/2015.8.4)
+
+### Change Log
+
+All changes to this document are tracked in [CHANGELOG.md](https://github.com/thisissoon/API-Specification/blob/master/CHANGELOG.md)
 
 ## Contents
 
