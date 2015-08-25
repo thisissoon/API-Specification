@@ -6,7 +6,7 @@ This document aims to provide that one source of truth.
 
 ## Versions
 
-Current Version: [2015.8.4](https://github.com/thisissoon/API-Specification/tree/2015.8.4)
+Current Version: [2015.8.25](https://github.com/thisissoon/API-Specification/tree/2015.8.25)
 
 ### Past Versions
 
@@ -50,6 +50,7 @@ All changes to this document are tracked in [CHANGELOG.md](https://github.com/th
   * [Example Flow](#example-flow)
 * [HMAC](#hmac-request-verification)
   * [Example](#example)
+* [Caching](#caching)
 
 ## Credits
 
@@ -847,4 +848,128 @@ func main() {
 
 	fmt.Println(res)
 }
+```
+
+## Caching
+
+Where appropriate consumers and services should cache responses. This can be achieved via the `ETag` HTTP
+specification.
+
+When a consumer requests data from a resource the response should include an `Etag` header. This is a hash
+of the response data, for example: `94232c5b8fc9272f6f73a1e36eb68fcf`. A `Cache-Control` header should
+also be provided detailing the length of time to cache for, for example: `max-age=86400`. The consumer
+should then store a cache of the response locally. Servers should also cache locally if possible.
+
+When a consumer requests the resource again it should send the `Etag` in the `If-None-Match` header, this
+triggers the server to check the `Etag` against that of the consumer. If they match the server will respond
+with an empty `304 Not Modified` which tells the consumer to use it's local cache. If the `Etag` and `If-None-Match`
+do not match this means the data has changed and the server should respond as normal, forcing the
+consumer to delete the old cache and cache the new response.
+
+### Example
+
+The example shows 4 HTTP reqpuest and responses outline the flow.
+
+#### First Request
+
+The first request to the resource.
+
+``` http
+GET / HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Host: foo.service/123
+```
+
+This causes the server to respond with a `200` including an `ETag` and `Cache-Control` headers. The consumer
+should now cache locally.
+
+``` http
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 193
+Content-Type: application/json
+Location: https://foo.service/123
+ETag: 94232c5b8fc9272f6f73a1e36eb68fcf
+Cache-Control: max-age=86400
+
+{"foo": "bar"}
+```
+
+#### Second Request
+
+We make the same request again but this time with the `If-None-Match` header which contains the `ETag` we
+got from the last request response.
+
+``` http
+GET / HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Host: foo.service/123
+If-None-Match: 94232c5b8fc9272f6f73a1e36eb68fcf
+```
+
+The server now responds with a `304` and no data forcing the consumer to load from it's local cache.
+
+``` http
+HTTP/1.1 304 Not Mofified
+Connection: keep-alive
+Content-Length: 0
+Content-Type: application/json
+Location: https://foo.service/123
+```
+
+#### Thrird Request
+
+We make the same request agaain.
+
+``` http
+GET / HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Host: foo.service/123
+If-None-Match: 94232c5b8fc9272f6f73a1e36eb68fcf
+```
+
+This time the content has changed and therefore a new `200` response is rerurned with a new `ETag` and
+`Cache-Control` headers.
+
+``` http
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 193
+Content-Type: application/json
+Location: https://foo.service/123
+ETag: 8594ed77e6c35d97bb7e07c9fa765b15
+Cache-Control: max-age=86400
+
+{"foo": "baz"}
+```
+
+The consumer should now clear it's previous cache and store the new object.
+
+#### Fourth Request
+
+We now make the same request with a new `If-None-Match` header container the new `ETag`.
+
+``` http
+GET / HTTP/1.1
+Accept: application/json
+Accept-Encoding: gzip, deflate
+Connection: keep-alive
+Host: foo.service/123
+If-None-Match: 8594ed77e6c35d97bb7e07c9fa765b15
+```
+
+Once again we get a `304`.
+
+``` http
+HTTP/1.1 304 Not Mofified
+Connection: keep-alive
+Content-Length: 0
+Content-Type: application/json
+Location: https://foo.service/123
 ```
