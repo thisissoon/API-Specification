@@ -872,7 +872,7 @@ The example shows 4 HTTP reqpuest and responses outline the flow.
 
 #### First Request
 
-This requests the resource without an `If-None-Match` header.
+The first request to the resource.
 
 ``` http
 GET / HTTP/1.1
@@ -914,7 +914,7 @@ If-None-Match: 94232c5b8fc9272f6f73a1e36eb68fcf
 The server now responds with a `304` and no data forcing the consumer to load from it's local cache.
 
 ``` http
-HTTP/1.1 304 Ntot Mofified
+HTTP/1.1 304 Not Mofified
 Connection: keep-alive
 Content-Length: 0
 Content-Type: application/json
@@ -967,7 +967,7 @@ If-None-Match: 8594ed77e6c35d97bb7e07c9fa765b15
 Once again we get a `304`.
 
 ``` http
-HTTP/1.1 304 Ntot Mofified
+HTTP/1.1 304 Not Mofified
 Connection: keep-alive
 Content-Length: 0
 Content-Type: application/json
