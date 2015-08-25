@@ -6,7 +6,7 @@ This document aims to provide that one source of truth.
 
 ## Versions
 
-Current Version: [2015.8.4](https://github.com/thisissoon/API-Specification/tree/2015.8.4)
+Current Version: [2015.8.25](https://github.com/thisissoon/API-Specification/tree/2015.8.25)
 
 ### Past Versions
 
