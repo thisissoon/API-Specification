@@ -755,7 +755,7 @@ Each service should send their request signature using the `Signature` HTTP Head
 this format:
 
 ```
-Signature: id:signature
+Signature: base64(id:signature)
 ```
 
 If a service does not contain a `Signature` header or the signature is not valid the service
@@ -838,7 +838,7 @@ func main() {
 
 	// Make the request to the service - adding the custmom header
 	req, _ := http.NewRequest("POST", "http://hello.service", bytes.NewBuffer(data))
-	req.Header.Set("Signasture", fmt.Sprintf("%s:%s", id, signature))
+	req.Header.Set("Signasture", base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", id, signature))))
 	client := &http.Client{}
 	res, err := client.Do(req)
 
