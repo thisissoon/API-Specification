@@ -48,6 +48,7 @@ All changes to this document are tracked in [CHANGELOG.md](https://github.com/th
 * [CORS](#cors)
 * [Authentication](#authentication)
   * [Example Flow](#example-flow)
+* [Service Identification](#service-identification)
 * [HMAC](#hmac-request-verification)
   * [Example](#example)
 * [Caching](#caching)
@@ -748,6 +749,17 @@ Date: Mon, 03 Aug 2015 11:37:25 GMT
     "email": "foo@bar.com",
     "activated": true,
 }
+```
+
+## Service Identification
+
+A service should identify itself via a HTTP Header. This is useful for debugging.
+
+``` http
+HTTP/1.0 200 OK
+Content-Type: application/json; charset=utf-8
+Date: Mon, 03 Aug 2015 11:37:25 GMT
+Service: FooServiceName
 ```
 
 ## HMAC Request Verification
