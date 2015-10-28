@@ -214,6 +214,11 @@ service to only return products where they are in the `1`, `2` or `6` categories
 **Note:** Services should not break if the consumer asks to filter on invalid query parameters
 or values.
 
+Query parameters should be consistent with the data model and should be camelCased. For example;
+where `Product` has a property `productName` the filter should be:
+
+`GET /products?productName=abc`
+
 ### Limiting List Results
 
 This ties slightly into pagination which will be covered in more detail later, however it is
