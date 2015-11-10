@@ -246,6 +246,29 @@ The above might be equivalent too:
 
 Which would return only the latest 4 new products.
 
+### Filtering Metadata
+
+To make it clear what filters are available on a resource, the `OPTIONS` request could provide a
+`_filters` object with details of each filter. These could either include an embedded list of
+query options or a link to another resource, for example:
+
+``` json
+"_filters": {
+    "region": {
+        "options": [
+            {
+                "label": "Europe",
+                "value": "EU"
+            }
+        ]
+    },
+    "section": {
+        "link": "/api/sections",
+        "value": "slug"
+    }
+}
+```
+
 ### Returning Resource Representations
 
 When issuing `POST`, `PUT` or `PATCH` requests to create or update objects should always
