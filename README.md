@@ -36,7 +36,8 @@ All changes to this document are tracked in [CHANGELOG.md](https://github.com/th
 * [Responses](#responses)
   * [Camel Cased](#camel-cased)
   * [Pretty Print](#pretty-print-by-default)
-  * [Do Not User an Envelope](#do-not-use-an-envelope)
+  * [Do Not Use an Envelope](#do-not-use-an-envelope)
+  * [Date Formats](#date-formats)
   * [Response Body Format](#response-body-format)
   * [Links](#links)
   * [Embedded Links](#embedded-links)
@@ -401,9 +402,18 @@ Just return the data :wink:
 }
 ```
 
-We will be using the `HAL` specification as described below.
+### Date Formats
+
+Dates should follow the `RFC3339` specification. That means:
+
+* `2016-01-06T14:45:00Z` for UTC (not `2016-01-06T14:45:00+00:00`)
+* `2016-01-06T14:45:00+01:00` for Time Zones
+
+By default all dates should be UTC dates and not include a timze zone offset.
 
 ### Response Body Format
+
+We will be using the `HAL` specification.
 
 All response bodies should follow the [`HAL`](https://tools.ietf.org/html/draft-kelly-json-hal-07)
 specification which follows the [`HATEOAS`](https://en.wikipedia.org/wiki/HATEOAS) principle.
