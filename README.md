@@ -599,25 +599,22 @@ An example would be an orders resource (`/orders`):
             }
         ],
     },
-    "_pagination": {
-        "total": 16,
-        "current": 1,
-        "limit": 2,
-    },
+    "pages": 16,
+    "currentPage": 1,
+    "limit": 2,
     "shipped": 12,
     "processing": 20,
     "total": 32,
 }
 ```
 
-Here we can see the `_links` property contains our `next` link data. The `_emebdded` property
+Here we can see the `_links` property contains our `next` link data. The `_embedded` property
 contains an `orders` property which has our list of embedded objects.
 
-The `_pagination` object contains meta data about the currently paginated resource,
-containing the following:
+The object contains meta data about the currently paginated resource:
 
-* `total`: The total number of pages we have
-* `current`: The current page we are on
+* `pages`: The total number of pages we have
+* `currentPage`: The current page we are on
 * `limit`: The current number of objects returned by each page
 
 The other properties returned here (`shipping`, `processing`) are specific to this resources
