@@ -189,10 +189,10 @@ when dealing with fields that do not exist to avoid consumers breaking.
 
 Some service resources will need provide sorting options, for example sorting a list of
 products by price. This should be achieved via a `sort` query parameter followed by a
-comma list of fields to sort on, each prefixed with a `+` or `-` to indicate ascending or
+comma list of fields to sort on, each prefixed with a `asc` or `desc` to indicate ascending or
 descending ordering.
 
-`GET /products?sort=-price,+name`
+`GET /products?sort=desc:price,asc:name`
 
 This would ask the products list resource to return results sorted descending by price and
 then ascending by name.
